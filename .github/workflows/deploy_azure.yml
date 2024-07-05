@@ -5,7 +5,44 @@ on:
         branches:
             - githubworkflows
     workflow_dispatch:
-
+env:
+    AZURE_FUNCTIONAPP_NAME: 'azpoe-blobnfs-monitor'   # set this to your function app name on Azure
+    AZURE_FUNCTIONAPP_PACKAGE_PATH: '.'       # set this to the path to your function app project, defaults to the repository root
+    PYTHON_VERSION: '3.11'
 jobs:
     build_and_deploy:
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+               shell: bash
+        steps:
+            - name: 'Checkout Github Actions'
+              uses: actions/checkout@v3
+            
+            - name: 'Setup Python environment'
+              uses: actions/setup-python@v4
+              with:
+                python-version: ${{env.PYTHON_VERSION}}
+            
+            - name: 'Create Virtual env'
+              run: |
+                python -m venv .venv
+                source venv/bin/activate
+
+            - name: 'Install dependenices'
+              run: |
+                pip install -r requirements.txt
+            
+            - name: 'Run Azure Functions Actions'
+              uses: Azure/functions-action@v1
+              id: deploymentfunctionapp
+              with:
+                app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
+                package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+                publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
+                scm-do-build-during-deployment: true
+                enable-oryx-build: true
+                
+
+        
         
