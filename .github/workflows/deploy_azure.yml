@@ -27,7 +27,7 @@ jobs:
             - name: 'Create Virtual env'
               run: |
                 python -m venv .venv
-                source venv/bin/activate
+                source .venv/bin/activate
 
             - name: 'Install dependenices'
               run: |
