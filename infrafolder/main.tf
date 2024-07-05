@@ -13,7 +13,6 @@ terraform {
     key="tffunctionapprahul.tfstate"
     tenant_id = "42f7676c-f455-423c-82f6-dc2d99791af7"
     subscription_id = "b437f37b-b750-489e-bc55-43044286f6e1"
-    access_key = "YMyfsV3kR/UjmATRQyC20YBS8rdv1Jp5XztsUyemLp5mN/Np/RUau+6PL3oDdi5nlG5MAGJqK1xe+ASt0quDmQ=="
   }
 }
 provider "azurerm" {
