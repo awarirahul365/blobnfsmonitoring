@@ -16,7 +16,11 @@ async def http_start(req: func.HttpRequest, client):
     #logger.setLevel(logging.WARNING)
     function_name = req.route_params.get('sddrlddr_orchestrator')
     instance_id = await client.start_new('sddrlddr_orchestrator',None,None)
-    response=await client.wait_for_completion_or_create_check_status_response(req,instance_id)
+    response=await client.wait_for_completion_or_create_check_status_response(
+        req,
+        instance_id,
+        timeout_in_milliseconds=400000
+        )
     return response
 
 # Orchestrator

@@ -1,0 +1,44 @@
+name: 'Deploy Function App to Azure'
+
+on:
+    push:
+        branches:
+            - main
+            - infrabuild
+        paths:
+            - infrafolder
+
+jobs:
+    terraform:
+        name: 'Function App terraform'
+        env: 
+            ARM_CLIENT_ID:  ${{secrets.SAPSE_ARM_CLIENT_ID}}
+            ARM_CLIENT_SECRET: ${{secrets.SAPSE_ARM_CLIENT_SECRET}}
+            ARM_SUBSCRIPTION_ID:  ${{secrets.SAPSE_ARM_SUBSCRIPTION_ID}}
+            ARM_TENANT_ID: ${{secrets.SAPSE_ARM_TENANT_ID}}
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: 'Checkout Repo'
+              uses: actions/checkout@v2
+            
+            - name: 'Current Branch Name'
+              run: |
+                echo "${{github.ref}}"
+
+            - name: terraform init
+              run: |
+                pwd
+                cd infrafolder
+                cat main.tf
+                terraform init -backend-config="key=tffunctionapprahul.tfstate"
+            
+            - name: terraform plan
+              run: |
+                terraform plan -out tfplan
+
+            - name: terraform apply
+              run: |
+                terraform apply tfplan
+
+

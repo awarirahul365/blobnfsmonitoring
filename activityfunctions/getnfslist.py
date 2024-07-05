@@ -15,8 +15,7 @@ class Nfsbloblist:
                 | join ( resources| where type=='microsoft.storage/storageaccounts' 
                 | where name contains 'blobnfs') on subscriptionId 
                 | extend Customerid=substring(resourceGroup,6,3) 
-                | project subscriptionId,resourceGroup,Customerid,id,Storageaccountname=name,subscriptionName
-                | top 10 by Storageaccountname"""
+                | project subscriptionId,resourceGroup,Customerid,id,Storageaccountname=name,subscriptionName"""
          
         async with credential:
             subscriptions=await SubscriptionService.subscription_list(credential,cloud)

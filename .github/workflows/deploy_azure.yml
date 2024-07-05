@@ -1,1 +1,11 @@
+name: 'Build and deploy functions app to azure'
 
+on:
+    push:
+        branches:
+            - githubworkflows
+    workflow_dispatch:
+
+jobs:
+    build_and_deploy:
+        
