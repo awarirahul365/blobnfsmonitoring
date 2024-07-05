@@ -37,10 +37,12 @@ jobs:
             
             - name: terraform plan
               run: |
+                cd infrafolder
                 terraform plan -out tfplan
 
             - name: terraform apply
               run: |
+                cd infrafolder
                 terraform apply tfplan
 
 
