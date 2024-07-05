@@ -19,6 +19,7 @@ provider "azurerm" {
 }
 
 
+
 module "createfunctionapp" {
   source = "./modules/functionapps"
   rgname = "azpoe-blobnfs-rg"
