@@ -17,6 +17,7 @@ jobs:
             ARM_SUBSCRIPTION_ID:  ${{secrets.SAPSE_ARM_SUBSCRIPTION_ID}}
             ARM_TENANT_ID: ${{secrets.SAPSE_ARM_TENANT_ID}}
             ARM_ACCESS_KEY: ${{secrets.SAPSE_ACCESS_KEY}}
+            
         runs-on: ubuntu-latest
 
         steps:
