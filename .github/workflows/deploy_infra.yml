@@ -6,7 +6,7 @@ on:
             - main
             - infrabuild
         paths:
-            - infrafolder
+            - infrafolder/**
 
 jobs:
     terraform:
