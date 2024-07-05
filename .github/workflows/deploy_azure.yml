@@ -3,7 +3,7 @@ name: 'Build and deploy functions app to azure'
 on:
     push:
         branches:
-            - githubworkflows
+            - infrabuild
     workflow_dispatch:
 env:
     AZURE_FUNCTIONAPP_NAME: 'azpoe-blobnfs-monitor'   # set this to your function app name on Azure
