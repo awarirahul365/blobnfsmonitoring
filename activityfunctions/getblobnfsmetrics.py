@@ -12,8 +12,6 @@ class Blobnfsmetrics:
 
     async def nfsmetricfunction(name):
         credential,cloud=AuthService.get_credential(name['credential_key'])
-        #print("Name Data")
-        #print(name['data'])
         async with credential:
             metric=await MonitorService.get_metrics_for_data(
                 credential=credential,

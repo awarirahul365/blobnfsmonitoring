@@ -222,7 +222,7 @@ class MonitorService(object):
         data_with_metrics = [
             {
                 **elem, 
-                "metrics": metric['UsedCapacity']['resource'][0]['latest']['average']
+                "metrics": round((metric['UsedCapacity']['resource'][0]['latest']['average'])/(1024**3),2)
             } for elem, metric in zip(data, metrics)
         ]
         logging.info("Total metric fetching for took {:.3f}s".format(time()-t0))

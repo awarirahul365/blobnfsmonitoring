@@ -6,15 +6,13 @@ from activityfunctions.getblobnfsmetrics import Blobnfsmetrics
 from services.promethus_service import Promethus
 import json
 import logging
+import itertools
 myApp = df.DFApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 
 # An HTTP-Triggered Function with a Durable Functions Client binding
-@myApp.route(route="orchestrators/sddrlddr_orchestrator")
+@myApp.route(route="sddrlddr_orchestrator")
 @myApp.durable_client_input(client_name="client")
-async def http_start(req: func.HttpRequest, client):
-    #logger = logging.getLogger('azure')
-    #logger.setLevel(logging.WARNING)
-    function_name = req.route_params.get('sddrlddr_orchestrator')
+async def http_start(req: func.HttpRequest, client:df.DurableOrchestrationClient):
     instance_id = await client.start_new('sddrlddr_orchestrator',None,None)
     response=await client.wait_for_completion_or_create_check_status_response(
         req,
@@ -33,10 +31,7 @@ def sddrlddr_orchestrator(context):
         blobnfs_list_divided=yield context.call_activity('divideaccounts',i['data'])
         blobnfs_metrics_parallel.extend([context.call_activity("getnfsblobmetrics",{"credential_key":i['credential_key'],"data":db}) for db in blobnfs_list_divided])
     bloblist_final=yield context.task_all(blobnfs_metrics_parallel)
-    json_list=[]
-    for mainlist in bloblist_final:
-        for sublist in mainlist:
-            json_list.append(sublist)
+    json_list=list(itertools.chain(*bloblist_final))
     promethus_output=Promethus.collector(metriclist=json_list)
     return promethus_output
     
