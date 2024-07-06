@@ -13,11 +13,11 @@ myApp = df.DFApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 @myApp.route(route="sddrlddr_orchestrator")
 @myApp.durable_client_input(client_name="client")
 async def http_start(req: func.HttpRequest, client:df.DurableOrchestrationClient):
-    instance_id = await client.start_new('sddrlddr_orchestrator',None,None)
+    instance_id = await client.start_new('sddrlddr_orchestrator')
     response=await client.wait_for_completion_or_create_check_status_response(
         req,
         instance_id,
-        timeout_in_milliseconds=400000
+        timeout_in_milliseconds=600000
         )
     return response
 

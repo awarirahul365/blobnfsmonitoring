@@ -218,13 +218,32 @@ class MonitorService(object):
                 metrics = await gather_with_concurrency(num_threads,*tasks)
             else:
                 metrics = await asyncio.gather(*tasks)
-        
-        data_with_metrics = [
+        list_without_metrics=[]
+        data_with_metrics=[]
+        for elem,metric in zip(data,metrics):
+            if metric is None:
+                list_without_metrics.append(
+                    {
+                        **elem
+                    }
+                )
+                continue
+            else:
+                try:
+                    data_with_metrics.append(
+                    {
+                        **elem,
+                        "metrics": round((metric['UsedCapacity']['resource'][0]['latest']['average'])/(1024**3),2)
+                    }
+                )
+                except Exception as e:
+                    logging.error(f"Error in monitor service {e}")
+        """data_with_metrics = [
             {
                 **elem, 
                 "metrics": round((metric['UsedCapacity']['resource'][0]['latest']['average'])/(1024**3),2)
             } for elem, metric in zip(data, metrics)
-        ]
+        ]"""
         logging.info("Total metric fetching for took {:.3f}s".format(time()-t0))
         
         return data_with_metrics

@@ -20,3 +20,4 @@ class Blobnfsmetrics:
             )
         logging.info(metric)  
         return metric
+                
