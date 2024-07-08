@@ -11,7 +11,7 @@ env:
     PYTHON_VERSION: '3.11'
 jobs:
     build_and_deploy:
-        runs-on: self-hosted
+        runs-on: [self-hosted, solinas]
         defaults:
             run:
                shell: bash
